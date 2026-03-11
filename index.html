@@ -322,7 +322,7 @@ function calculateScores(logs){
           totalPoints+=0.5; // 🔥 add bonus to total
         }
         else if(diff>1){
-          let penalty=(diff-1)*2;
+          let penalty=1;
           consistency=Math.max(0,consistency-penalty);
           streak=1;
         }
