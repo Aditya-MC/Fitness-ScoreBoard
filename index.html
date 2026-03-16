@@ -39,7 +39,7 @@ body{
   backdrop-filter:blur(14px);
   padding:12px 18px;
   border-radius:16px;
-  font-size:16px;
+  font-size:14px;
   font-weight:600;
   text-align:center;
   border:1px solid #00ff00;
@@ -59,7 +59,7 @@ body{
     right:auto;
     margin:10px auto 0 auto;
     max-width:220px;
-    font-size:13px;
+    font-size:14px;
   }
 
 }
@@ -85,7 +85,7 @@ body{
 
 #dangerPlayers{
   margin-top:6px;
-  font-size:13px;
+  font-size:15px;
   font-weight:700;
   color:#ff3b3b;
 }
@@ -130,6 +130,20 @@ body{
   align-items:flex-end;
   gap:28px;
   margin-top:20px;
+
+  max-width:100%;
+  overflow-x:auto;     /* prevents breaking layout */
+  padding-bottom:10px; /* space for scroll */
+}
+
+/* smooth scrolling look */
+.podium::-webkit-scrollbar{
+  height:6px;
+}
+
+.podium::-webkit-scrollbar-thumb{
+  background:#4e73df;
+  border-radius:10px;
 }
 
 .podium div{
@@ -145,6 +159,7 @@ body{
   box-shadow:0 12px 35px rgba(0,0,0,0.5);
   transition:0.35s;
   position:relative;
+  flex-shrink:0;
 }
 
 .podium div:hover{
@@ -310,7 +325,6 @@ button:hover{
 /* ===== MODAL ===== */
 .topCards{
     display:flex;
-  justify-content:space-around;
 }
 .modal{
   display:none;
@@ -659,7 +673,7 @@ function updateConsistencyLeader(result){
 
   document.getElementById("leaderName").innerHTML =
 `👑 ${leader[0]} (${leader[1].consistency})<br>
-<span style="font-size:25px;font-weight:700; color: #00ff00;">${leader[1].streak} DAYS</span>`;
+<span style="font-size:20px;font-weight:700; color: #00ff00;">${leader[1].streak} DAYS</span>`;
 }
 
 function updateDangerZone(result){
