@@ -604,8 +604,9 @@ function calculateScores(logs){
 
         if(diff===1){
           streak++;
-          consistency+=0.5;
-          totalPoints+=0.5; // 🔥 add bonus to total
+          consistency += 0.5
+          bonus = Math.min(consistency,5)
+          totalPoints += bonus // 🔥 add bonus to total
         }
         else if(diff>1){
           let penalty=(diff-1)*2;
@@ -706,8 +707,8 @@ function updateDangerZone(result){
   const player2 = sorted[1];
 
   document.getElementById("dangerPlayers").innerHTML =
-    "⚠️ " + player1[0] + " (" + player1[1].total + ")<br>" +
-    "⚠️ " + player2[0] + " (" + player2[1].total + ")";
+    "🔻 " + player1[0] + " (" + player1[1].total + ")<br>" +
+    "🔻 " + player2[0] + " (" + player2[1].total + ")";
 }
 
     
