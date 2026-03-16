@@ -126,14 +126,33 @@ body{
 
 .podium{
   display:flex;
-  justify-content:center;
   align-items:flex-end;
   gap:28px;
   margin-top:20px;
-
+  overflow-x:auto;
   max-width:100%;
-  overflow-x:auto;     /* prevents breaking layout */
-  padding-bottom:10px; /* space for scroll */
+  padding-bottom:10px;
+  scroll-behavior:smooth;
+}
+
+/* prevent shrinking */
+.podium div{
+  flex-shrink:0;
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width:700px){
+  .podium{
+    justify-content:center;
+    overflow-x:hidden;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:699px){
+  .podium{
+    justify-content:flex-start;
+  }
 }
 
 /* smooth scrolling look */
