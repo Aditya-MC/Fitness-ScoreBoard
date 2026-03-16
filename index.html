@@ -5,7 +5,7 @@
 <title>Monthly Fitness Competition</title>
 
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 *{
@@ -120,10 +120,14 @@ body{
 }
 
 .scoreboard h2{
-  font-size:32px;
-  letter-spacing:1px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:48px;
   margin-bottom:25px;
-  font-weight:600;
+  font-weight:normal;
+  text-transform:uppercase;
+  text-shadow:
+    0 4px 10px rgba(0,0,0,0.6),
+    0 0 12px rgba(255,255,255,0.15);
 }
 
 /* ===== PODIUM ===== */
@@ -312,7 +316,9 @@ button:hover{
 }
 
 /* ===== MODAL ===== */
-
+.topCards{
+    display:flex;
+}
 .modal{
   display:none;
   position:fixed;
@@ -360,19 +366,23 @@ button:hover{
 </style>
 </head>
 <body>
-<div id="consistencyLeader">
- ⭐Peak Streaker⭐ <br>
-<span id="leaderName">--</span>
-</div>
+
 <div class="scoreboard">
     <h2>Monthly Competition</h2>
     <div class="podium" id="podium"></div>
 </div>
 
-<div id="dangerZone">
-⚠ Players in Danger
-<div id="dangerPlayers">--</div>
+<div class="topCards">
+        <div id="consistencyLeader">
+        ⭐Peak Streaker⭐ <br>
+        <span id="leaderName">--</span>
+        </div>
+        <div id="dangerZone">
+        ⚠ Players in Danger
+        <div id="dangerPlayers">--</div>
+        </div>
 </div>
+
     
 
 <div class="container">
