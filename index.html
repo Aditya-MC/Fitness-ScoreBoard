@@ -35,27 +35,19 @@ body{
   position:fixed;
   top:18px;
   right:18px;
-  background:rgba(255,255,255,0.08);
+  background:rgba(0,255,140,0.08);
   backdrop-filter:blur(14px);
   padding:12px 18px;
   border-radius:16px;
-  font-size:14px;
+  font-size:16px;
   font-weight:600;
   text-align:center;
-  box-shadow:0 8px 30px rgba(0,0,0,0.45);
-  border:1px solid rgba(255,255,255,0.2);
+  border:1px solid #00ff00;
   max-width:190px;
   transition:0.3s;
 }
 
-#leaderName{
-  display:block;
-  font-size:16px;
-  margin-top:4px;
-  color:#ffd700;
-  text-shadow:0 0 10px rgba(255,215,0,0.6);
-  word-break:break-word;
-}
+
 
 /* ===== MOBILE RESPONSIVE ===== */
 
@@ -67,7 +59,7 @@ body{
     right:auto;
     margin:10px auto 0 auto;
     max-width:220px;
-    font-size:13px;
+    font-size:16px;
   }
 
 }
@@ -82,11 +74,11 @@ body{
   backdrop-filter:blur(14px);
   padding:12px 18px;
   border-radius:16px;
-  font-size:14px;
+  font-size:16px;
   font-weight:600;
   text-align:center;
   box-shadow:0 8px 30px rgba(0,0,0,0.45);
-  border:1px solid rgba(255,80,80,0.4);
+  border:1px solid #ff0000;
   max-width:180px;
   color:#ff6b6b;
 }
@@ -664,8 +656,9 @@ function updateConsistencyLeader(result){
 
   const leader = sorted[0];
 
-  document.getElementById("leaderName").innerText =
-    "👑" + leader[0] + " (" + leader[1].consistency + ")";
+  document.getElementById("leaderName").innerHTML =
+`👑 ${leader[0]} (${leader[1].consistency})<br>
+<span style="font-size:20px;font-weight:700; color: #00ff00;">${leader[1].streak} DAYS</span>`;
 }
 
 function updateDangerZone(result){
