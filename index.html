@@ -593,6 +593,10 @@ function calculateScores(logs){
     let restUsed=0;
     let totalPoints=0;
 
+    let walkRunKM = 0;
+    let weightHours = 0;
+
+    let missedDays = 0;
     let lastDate=null;
 
     userLogs.forEach(([id,log])=>{
@@ -604,11 +608,14 @@ function calculateScores(logs){
 
         if(diff===1){
           streak++;
-          consistency += 0.5
-          bonus = Math.min(consistency,5)
-          totalPoints += bonus // 🔥 add bonus to total
+          consistency+=0.5;
+
+          // ✅ NEW SYSTEM
+          totalPoints += consistency;
         }
         else if(diff>1){
+          missedDays += (diff-1);
+
           let penalty=(diff-1)*2;
           consistency=Math.max(0,consistency-penalty);
           streak=1;
@@ -616,27 +623,56 @@ function calculateScores(logs){
       }
 
       if(log.work==="weight"){
-    activity+=log.amount * 2;
-    totalPoints+=log.amount * 2;
-}
-else if(log.work==="walk" || log.work==="run"){
-    activity+=log.amount;
-    totalPoints+=log.amount;
-}else{
+        activity += log.amount * 2;
+        totalPoints += log.amount * 2;
+        weightHours += log.amount;
+      }
+      else if(log.work==="walk" || log.work==="run"){
+        activity += log.amount;
+        totalPoints += log.amount;
+        walkRunKM += log.amount;
+      }
+      else{
         restUsed++;
       }
 
       lastDate=log.date;
     });
 
+    // 💰 MONEY CALCULATION
+    let moneyGained = 0;
+    let moneyLost = 0;
+
+    // bonuses
+    moneyGained += Math.floor(walkRunKM / 10) * 20;
+    moneyGained += Math.floor(weightHours / 4) * 20;
+
+    // penalties
+    if(totalPoints < 50){
+      moneyLost += 50;
+    }
+
+    moneyLost += Math.floor(missedDays / 3) * 30;
+
     result[player]={
       total:Number(totalPoints.toFixed(2)),
       activity:Number(activity.toFixed(2)),
       streak,
       consistency:Number(consistency.toFixed(2)),
-      restLeft:REST_LIMIT-restUsed
+      restLeft:REST_LIMIT-restUsed,
+      moneyGained,
+      moneyLost
     };
   });
+
+  // 🏆 Apply last & second last penalties
+  let sorted = Object.entries(result)
+    .sort((a,b)=>a[1].total - b[1].total);
+
+  if(sorted.length >= 2){
+    sorted[0][1].moneyLost += 100; // last
+    sorted[1][1].moneyLost += 50;  // second last
+  }
 
   updatePodium(result);
   updateCards(result);
@@ -665,23 +701,82 @@ function updateCards(result){
   container.innerHTML="";
 
   Object.entries(result).forEach(([name,data])=>{
+
+    const net = data.moneyGained - data.moneyLost;
+    const netColor = net >= 0 ? "#4caf50" : "#ff5252";
+    const netBg = net >= 0 
+      ? "rgba(76,175,80,0.15)" 
+      : "rgba(255,82,82,0.15)";
+
     container.innerHTML+=`
-  <div class="card">
-    <h3>🏆 ${name}</h3>
-    <p>⭐ Total: ${data.total}</p>
-    <p>🔥 Streak: ${data.streak} days</p>
-    <p>⚡ Consistency: ${data.consistency}</p>
-    <p>😌 Rest Days Left: ${data.restLeft}</p>
+      <div class="card" style="
+        background:#1e2a2f;
+        color:#fff;
+        border-radius:16px;
+        padding:15px;
+        margin-bottom:15px;
+      ">
 
-    <button class="deletePlayerBtn" onclick="deletePlayer('${name}')">
-      Delete Player
-    </button>
+        <!-- TOP -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin:0;">🏆 ${name}</h3>
 
-  </div>
-`;
+          <div style="
+            background:rgba(255,255,255,0.08);
+            padding:10px 12px;
+            border-radius:10px;
+            font-size:14px;
+            min-width:120px;
+          ">
+            <div style="color:#4caf50;">+₹${data.moneyGained}</div>
+            <div style="color:#ff5252;">-₹${data.moneyLost}</div>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div style="
+          margin-top:12px;
+          padding:12px;
+          border-radius:12px;
+          background:rgba(255,255,255,0.05);
+        ">
+          <p>⭐ Total: ${data.total}</p>
+          <p>🔥 Streak: ${data.streak}</p>
+          <p>⚡ Consistency: ${data.consistency}</p>
+          <p>😌 Rest Left: ${data.restLeft}</p>
+        </div>
+
+        <!-- BOTTOM ROW -->
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-top:12px;
+        ">
+
+          <button class="deletePlayerBtn" onclick="deletePlayer('${name}')">
+            Delete Player
+          </button>
+
+          <!-- NET BOX -->
+          <div style="
+            padding:8px 14px;
+            border-radius:20px;
+            font-weight:bold;
+            background:${netBg};
+            color:${netColor};
+            border:1px solid ${netColor};
+          ">
+            ₹${net >= 0 ? "+" : ""}${net}
+          </div>
+
+        </div>
+
+      </div>
+    `;
   });
 }
-
+    
 function updateConsistencyLeader(result){
 
   let sorted = Object.entries(result)
@@ -707,8 +802,8 @@ function updateDangerZone(result){
   const player2 = sorted[1];
 
   document.getElementById("dangerPlayers").innerHTML =
-    "🔻 " + player1[0] + " (" + player1[1].total + ")<br>" +
-    "🔻 " + player2[0] + " (" + player2[1].total + ")";
+    "⚠️ " + player1[0] + " (" + player1[1].total + ")<br>" +
+    "⚠️ " + player2[0] + " (" + player2[1].total + ")";
 }
 
     
