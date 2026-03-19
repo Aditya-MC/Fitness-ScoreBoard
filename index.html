@@ -72,7 +72,11 @@ body{
   background:white;
   text-align:center;
 }
-
+@media(min-width:768px){
+  .podium{
+    justify-content:center; /* center on desktop */
+  }
+}
 /* subtle hierarchy */
 
 .first{
@@ -786,7 +790,7 @@ function updateConsistencyLeader(result){
   const leader = sorted[0];
 
   document.getElementById("leaderName").innerHTML =
-` <span style="font-size:20px;font-weight:700;">👑 ${leader[0]}</span><br>
+` <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px" fill="#75FB4C"><path d="m280-400 200-200 200 200H280Z"/></svg> ${leader[0]}</span><br>
 <span style="font-size:20px;font-weight:700; color: #00ff00;">${leader[1].streak} DAYS</span>`;
 }
 
@@ -801,8 +805,8 @@ function updateDangerZone(result){
   const player2 = sorted[1];
 
   document.getElementById("dangerPlayers").innerHTML =
-    "⚠️ " + player1[0] + " (" + player1[1].total + ")<br>" +
-    "⚠️ " + player2[0] + " (" + player2[1].total + ")";
+    "🔻 " + player1[0] + " (" + player1[1].total + ")<br>" +
+    "🔻 " + player2[0] + " (" + player2[1].total + ")";
 }
 
 function applyFilters(){
