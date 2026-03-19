@@ -40,18 +40,29 @@ body{
 
 .podium{
   display:flex;
-  justify-content:center;
   align-items:flex-end;
-  gap:16px;
-  margin-top:25px;
-  overflow-x:auto;
-  padding-bottom:10px;
+  gap:20px;
+
+  overflow-x:auto;   /* enable scroll */
+  overflow-y:hidden;
+
+  padding:10px 20px;
+
+  width:100%;
+  max-width:100vw;
+
+  scroll-behavior:smooth;
 }
 
+/* hide ugly scrollbar */
 .podium::-webkit-scrollbar{
   display:none;
 }
 
+.podium > div{
+  flex-shrink:0; /* prevents squeezing */
+}
+    
 .podium div{
   width:90px;
   border-radius:10px;
@@ -263,6 +274,15 @@ button:hover{
   padding-bottom:6px;
 }
 
+
+.topCards{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
 /* ===== NET PILL ===== */
 
 .net-pill{
@@ -669,6 +689,7 @@ function calculateScores(logs){
 }
 
 function updatePodium(result){
+  document.getElementById("podium").scrollLeft = 0;
   let sorted=Object.entries(result)
     .sort((a,b)=>b[1].total-a[1].total);
 
