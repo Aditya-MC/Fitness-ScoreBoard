@@ -102,7 +102,7 @@ body{
 }
 
 .fifth{
-  height:91px;
+  height:60px;
   background:#6b7280;
   color:white;
 }
@@ -693,20 +693,31 @@ function calculateScores(logs){
 }
 
 function updatePodium(result){
-  document.getElementById("podium").scrollLeft = 0;
-  let sorted=Object.entries(result)
-    .sort((a,b)=>b[1].total-a[1].total);
 
-  const classes=["first","second","third","fourth"];
-  const podium=document.getElementById("podium");
-  podium.innerHTML="";
+  let sorted = Object.entries(result)
+    .sort((a,b)=>b[1].total - a[1].total);
+
+  const podium = document.getElementById("podium");
+  podium.innerHTML = "";
+
+  const baseHeight = 160; // tallest
+  const step = 18;        // shrink per rank
 
   sorted.forEach((p,i)=>{
-    podium.innerHTML+=`
-      <div class="${classes[i]}">
+
+    let height = baseHeight - (i * step);
+
+    // minimum height safety
+    if(height < 70) height = 70;
+
+    podium.innerHTML += `
+      <div class="podiumBlock"
+           style="height:${height}px">
         ${p[0]}<br>${p[1].total} pts
-      </div>`;
+      </div>
+    `;
   });
+
 }
 
 function updateCards(result){
